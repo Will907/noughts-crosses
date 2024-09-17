@@ -1,5 +1,6 @@
 use rand::Rng;
-use std::io::{self, Write};
+use crossterm::{cursor::MoveTo, execute, terminal::{Clear, ClearType}};
+use std::io::{self, Write, stdout};
 
 fn main() {
     println!("Welcome to noughts and crosses!");
@@ -61,4 +62,36 @@ fn game(players: &u8) {
         _ => println!("Not sure what happened here"),
     };
     println!("{first}");
+    board();
+}
+
+fn board() {
+    let mut stdout = stdout();
+    let rows = 4;
+    let cols = 4;
+    //let mut cellcentres = [[(0,0)]];
+    execute!(stdout, Clear(ClearType::All)).expect("Error while clearing");
+    execute!(stdout, MoveTo(0,0)).expect("Could not move cursor");
+    printboard(&cols, &rows);
+}
+
+fn printboard(cols: &i32, rows: &i32) {
+    for y in 0..*rows {
+        for reps in 1..4 {
+            for x in 0..*cols {
+                match reps % 3 {
+                    0 => match y + 1 == *rows {
+                        true => print!("   "),
+                        false => print!("___"),
+                    },
+                    _ => print!("   "),
+                }
+                match x + 1 == *cols {
+                    true => print!(" "),
+                    false => print!("|"),
+                }
+            }
+            println!("")
+        }
+    }
 }
