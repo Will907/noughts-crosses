@@ -67,9 +67,16 @@ fn game(players: &u8) {
 
 fn board() {
     let mut stdout = stdout();
-    let rows = 4;
-    let cols = 4;
-    //let mut cellcentres = [[(0,0)]];
+    let rows: i32 = 4;
+    let cols: i32 = 4;
+    let mut cellcentres = vec![vec![]];
+    for y in 0..rows {
+        for x in 0..cols {
+            let pos = (4*x+1,3*y+1);
+            cellcentres[y as usize].push(pos);
+        }
+        cellcentres.push(vec![]);
+    }
     execute!(stdout, Clear(ClearType::All)).expect("Error while clearing");
     execute!(stdout, MoveTo(0,0)).expect("Could not move cursor");
     printboard(&cols, &rows);
